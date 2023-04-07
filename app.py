@@ -11,7 +11,7 @@ from enum import Enum
 
 def main():
     st.title('MLB Insights')
-    st.caption('MLB Insights is the ultimate app for baseball fans who want to stay up-to-date on the latest player statistics and profiles.')
+    st.caption('MLB Insights is the ultimate site for baseball fans who want to stay up-to-date on the latest player statistics and profiles.')
     st.divider()
 
     players = defaultdict(dict)  # id -> Player()
