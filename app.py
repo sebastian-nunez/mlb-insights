@@ -105,7 +105,7 @@ def display_player_search():
     st.header(Page.SEARCH_ENGINE.value)
 
     player_name = st.selectbox(
-        label='Start typing...',
+        label="Enter a player's name to see their stats!",
         options=name_to_id.keys(),
         help="Enter a player's name then press ENTER...",
     )
@@ -206,12 +206,7 @@ def display_ballparks():
                           popup=popup_text).add_to(map)
 
         folium_static(map)
-        st.caption('''
-                    > Please note that the MLB Stadium map is for reference only and may not be up-to-date. We cannot guarantee the accuracy or completeness of the information provided.
-                    >
-                    > Users are advised to confirm information with official sources or contact relevant authorities.
-                    >
-                    > Use at your own risk; we assume no liability for errors or omissions.''')
+        st.caption('> Please note that the MLB Stadium map is for reference only and may not be up-to-date. We cannot guarantee the accuracy or completeness of the information provided.')
 
         display_signup_form()
 
