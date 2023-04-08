@@ -14,6 +14,7 @@ import json
 from datetime import datetime
 import altair as alt
 import os
+import time
 
 st.set_page_config(
     page_title="MLB Insights",
@@ -32,6 +33,7 @@ st.set_page_config(
 
 player = None
 BALLPARKS_JSON_PATH = './ballsparks.json'
+EMAILS_FILE_PATH = './emails.json'
 
 
 class Page(Enum):
@@ -114,7 +116,7 @@ def display_player_search():
         player = players[id]
 
     if player:
-        st.success(f'You Selected: {player}')
+        # success = st.success(f'You Selected: {player}')
         display_player_info(player)
 
 
@@ -182,6 +184,8 @@ def display_league_leaders():
         # display the chart in Streamlit
         st.altair_chart(chart, use_container_width=True)
 
+    display_signup_form()
+
 
 def display_ballparks():
     if not os.path.exists(BALLPARKS_JSON_PATH):
@@ -216,9 +220,10 @@ def display_ballparks():
                     >
                     > Use at your own risk; we assume no liability for errors or omissions.''')
 
+        display_signup_form()
+
 
 def display_benefits():
-
     st.markdown(
         f'''
         ## Benefits
@@ -241,6 +246,49 @@ def display_benefits():
     if easter_egg:
         st.success('Congratulations! You have found the easter egg on the MLB Insights website! Your sharp detective skills have paid off and we are thrilled that you were able to uncover our hidden gem!')
         st.balloons()
+
+    display_signup_form()
+
+
+def save_email(email):
+    users = []
+
+    try:
+        with open(EMAILS_FILE_PATH, "r") as file:
+            users = json.load(file)
+    except FileNotFoundError:
+        st.error(f'Unable to open {EMAILS_FILE_PATH}!')
+
+    if email not in users:
+        users.append(email)
+
+    with open(EMAILS_FILE_PATH, "w") as file:
+        json.dump(users, file)
+
+
+def display_signup_form():
+    st.markdown(
+        f'''
+        #### Sign up for Notifications!
+        > Don't miss out on the latest news! Sign up for our email notifications to stay informed about the latest updates, news, and announcements.
+        '''
+    )
+
+    with st.form("sign_up", clear_on_submit=True):
+        email = st.text_input("Enter your email address:")
+
+        submitted = st.form_submit_button("Submit")
+
+        if submitted:
+            if email:
+                save_email(email)
+                success = st.success("Thank you for signing up!")
+                time.sleep(3)
+                success.empty()
+            else:
+                no_email = st.warning("Please enter an email address.")
+                time.sleep(3)
+                no_email.empty()
 
 
 def display_player_info(player):
