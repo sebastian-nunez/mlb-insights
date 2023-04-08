@@ -53,28 +53,12 @@ def main():
 
     # main content
     if page == Page.SEARCH_ENGINE.value:
-        st.title('MLB Insights')
-        st.caption('MLB Insights is the ultimate site for baseball fans who want to stay up-to-date on the latest player statistics and profiles.')
-        st.divider()
-
         display_player_search()
     elif page == Page.LEAGUE_LEADERS.value:
-        st.header(Page.LEAGUE_LEADERS.value)
-        st.caption("Find the top performers in the MLB under these categories is a way to identify the players who are having exceptional seasons and contributing significantly to their team's success.")
-        st.divider()
-
         display_league_leaders()
     elif page == Page.BALLPARKS.value:
-        st.header(Page.BALLPARKS.value)
-        st.caption('You can find all the MLB stadiums on this map!')
-        st.divider()
-
         display_ballparks()
     elif page == Page.WHY_US.value:
-        st.title('MLB Insights')
-        st.caption('MLB Insights is the ultimate site for baseball fans who want to stay up-to-date on the latest player statistics and profiles.')
-        st.divider()
-
         display_benefits()
     else:
         page = Page.SEARCH_ENGINE.value
@@ -82,6 +66,10 @@ def main():
 
 def display_player_search():
     global player
+    
+    st.title('MLB Insights')
+    st.caption('MLB Insights is the ultimate site for baseball fans who want to stay up-to-date on the latest player statistics and profiles.')
+    st.divider()
 
     players = defaultdict(dict)  # id -> Player()
     name_to_id = defaultdict(str)  # name -> id
@@ -120,6 +108,10 @@ def display_player_search():
 
 
 def display_league_leaders():
+    st.header(Page.LEAGUE_LEADERS.value)
+    st.caption("Find the top performers in the MLB under these categories is a way to identify the players who are having exceptional seasons and contributing significantly to their team's success.")
+    st.divider()
+    
     options = {
         'Homeruns': 'homeRuns',
         'Strikeouts': 'strikeouts',
@@ -139,6 +131,7 @@ def display_league_leaders():
 
     max_results = st.slider('Select the number of results:', 5,
                             100, step=5, value=10)
+    st.divider()
 
     # data fetching
     data = statsapi.league_leader_data(metric, season=selected_season, limit=max_results, statGroup=None,
@@ -187,6 +180,10 @@ def display_league_leaders():
 
 
 def display_ballparks():
+    st.header(Page.BALLPARKS.value)
+    st.caption('You can find all the MLB stadiums on this map!')
+    st.divider()
+    
     if not os.path.exists(BALLPARKS_JSON_PATH):
         st.error(
             f'Unable to fetch Ballpark locations! (fetching from {BALLPARKS_JSON_PATH})')
@@ -212,6 +209,10 @@ def display_ballparks():
 
 
 def display_benefits():
+    st.title('MLB Insights')
+    st.caption('MLB Insights is the ultimate site for baseball fans who want to stay up-to-date on the latest player statistics and profiles.')
+    st.divider()
+    
     st.markdown(
         f'''
         ## Benefits
