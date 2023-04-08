@@ -209,6 +209,13 @@ def display_ballparks():
 
             webbrowser.open_new_tab(target_url)
 
+        st.caption('''
+                    > Please note that the MLB Stadium map is for reference only and may not be up-to-date. We cannot guarantee the accuracy or completeness of the information provided.
+                    >
+                    > Users are advised to confirm information with official sources or contact relevant authorities.
+                    >
+                    > Use at your own risk; we assume no liability for errors or omissions.''')
+
 
 def display_benefits():
 
