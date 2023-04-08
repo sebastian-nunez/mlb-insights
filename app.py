@@ -15,6 +15,7 @@ from datetime import datetime
 import altair as alt
 import os
 import time
+import re
 
 st.set_page_config(
     page_title="MLB Insights",
@@ -34,6 +35,7 @@ st.set_page_config(
 player = None
 BALLPARKS_JSON_PATH = './ballsparks.json'
 EMAILS_FILE_PATH = './emails.json'
+EMAIL_PATTERN = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
 
 
 class Page(Enum):
@@ -250,6 +252,12 @@ def display_benefits():
     display_signup_form()
 
 
+def is_valid_email(email):
+    if not re.match(EMAIL_PATTERN, email):
+        return False
+    return True
+
+
 def save_email(email):
     users = []
 
@@ -281,10 +289,16 @@ def display_signup_form():
 
         if submitted:
             if email:
-                save_email(email)
-                success = st.success("Thank you for signing up!")
-                time.sleep(3)
-                success.empty()
+                if is_valid_email(email):
+                    save_email(email)
+
+                    success = st.success("Thank you for signing up!")
+                    time.sleep(3)
+                    success.empty()
+                else:
+                    invalid_email = st.error("Invalid email address!")
+                    time.sleep(3)
+                    invalid_email.empty()
             else:
                 no_email = st.warning("Please enter an email address.")
                 time.sleep(3)
