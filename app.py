@@ -244,9 +244,10 @@ def display_benefits():
 
 
 def is_valid_email(email):
-    if not re.match(EMAIL_PATTERN, email):
+    if not email:
         return False
-    return True
+
+    return re.match(EMAIL_PATTERN, email)
 
 
 def save_email(email):
