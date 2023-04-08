@@ -66,7 +66,7 @@ def main():
 
 def display_player_search():
     global player
-    
+
     st.title('MLB Insights')
     st.caption('MLB Insights is the ultimate site for baseball fans who want to stay up-to-date on the latest player statistics and profiles.')
     st.divider()
@@ -98,6 +98,8 @@ def display_player_search():
         help="Enter a player's name then press ENTER...",
     )
 
+    st.divider()
+
     if player_name != None:
         id = name_to_id[player_name]
         player = players[id]
@@ -111,7 +113,7 @@ def display_league_leaders():
     st.header(Page.LEAGUE_LEADERS.value)
     st.caption("Find the top performers in the MLB under these categories is a way to identify the players who are having exceptional seasons and contributing significantly to their team's success.")
     st.divider()
-    
+
     options = {
         'Homeruns': 'homeRuns',
         'Strikeouts': 'strikeouts',
@@ -183,7 +185,7 @@ def display_ballparks():
     st.header(Page.BALLPARKS.value)
     st.caption('You can find all the MLB stadiums on this map!')
     st.divider()
-    
+
     if not os.path.exists(BALLPARKS_JSON_PATH):
         st.error(
             f'Unable to fetch Ballpark locations! (fetching from {BALLPARKS_JSON_PATH})')
@@ -212,7 +214,7 @@ def display_benefits():
     st.title('MLB Insights')
     st.caption('MLB Insights is the ultimate site for baseball fans who want to stay up-to-date on the latest player statistics and profiles.')
     st.divider()
-    
+
     st.markdown(
         f'''
         ## Benefits
@@ -267,6 +269,8 @@ def save_email(email):
 
 
 def display_signup_form():
+    st.divider()
+
     with st.form("sign_up", clear_on_submit=True):
         st.markdown(
             f'''
@@ -297,8 +301,6 @@ def display_signup_form():
 
 
 def display_player_info(player):
-    st.divider()
-
     res = requests.get(
         f"http://lookup-service-prod.mlb.com/json/named.player_info.bam?sport_code='mlb'&player_id='{player.id}'")
 
