@@ -266,15 +266,13 @@ def save_email(email):
 
 
 def display_signup_form():
-    st.divider()
-    st.markdown(
-        f'''
-        #### Sign up for Notifications!
-        > Don't miss out on the latest news! Sign up for our email notifications to stay informed about the latest updates, news, and announcements.
-        '''
-    )
-
     with st.form("sign_up", clear_on_submit=True):
+        st.markdown(
+            f'''
+            #### Sign up for Notifications!
+            > Don't miss out on the latest news! Sign up for our email notifications to stay informed about the latest updates, news, and announcements.
+            '''
+        )
         email = st.text_input("Enter your email address:")
 
         submitted = st.form_submit_button("Submit")
