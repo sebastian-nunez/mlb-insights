@@ -18,10 +18,10 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
-        'About': '''
+        'About': f'''
         MLB Insights is the ultimate site for baseball fans who want to stay up-to-date on the latest player statistics and profiles.
 
-        **Developed by:** Sebastian Nunez (2023)
+        **Developed by:** Sebastian Nunez ({datetime.now().year})
 
         Did you know that we have an `easter egg` *hidden* somewhere on the site? To find it, you'll need to use your skills as a detective and delve into the **HTML source code**. Keep your eyes peeled for any clues that might lead you to the hidden gem. Who knows what kind of insights or fun surprises you might uncover? Happy hunting!
         '''
@@ -57,6 +57,7 @@ def main():
         display_player_search()
     elif page == Page.LEAGUE_LEADERS.value:
         st.header(Page.LEAGUE_LEADERS.value)
+        st.caption("Find the top performers in the MLB under these categories is a way to identify the players who are having exceptional seasons and contributing significantly to their team's success.")
         st.divider()
 
         display_league_leaders()
@@ -116,11 +117,15 @@ def display_player_search():
 
 def display_league_leaders():
     options = {
-        'Homeruns': 'homeruns',
+        'Homeruns': 'homeRuns',
+        'Strikeouts': 'strikeouts',
+        'Avg': 'battingAverage',
         'ERA': 'earnedRunAverage',
-        'OPS': 'onBasePlusSlugging',
+        'RBI': 'runsBattedIn',
         'Errors': 'errors',
     }
+
+    # st.write(statsapi.meta('leagueLeaderTypes'))
 
     # Parameters
     metric = st.radio("Select a metric:", options.keys())
@@ -129,11 +134,13 @@ def display_league_leaders():
     selected_season = st.selectbox('Select a season:', seasons)
 
     max_results = st.slider('Select the number of results:', 5,
-                            100, step=5, value=10)
+                            25, step=5, value=10)
 
     # data fetching
     data = statsapi.league_leader_data(metric, season=selected_season, limit=max_results, statGroup=None,
                                        leagueId=None, gameTypes=None, playerPool=None, sportId=1, statType=None)
+    if not data:
+        st.error('Unable to fetch data for {metric}!')
 
     df = pd.DataFrame(data, columns=['Rank', 'Player', 'Team', metric])
 
