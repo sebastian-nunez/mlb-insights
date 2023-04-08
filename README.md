@@ -1,6 +1,8 @@
-# MLB Insights
+# [MLB Insights](https://mlb-insights.streamlit.app/)
 
 > MLB Insights is the ultimate site for baseball fans who want to stay up-to-date on the latest player statistics and profiles.
+> 
+> **Live App;** https://mlb-insights.streamlit.app/
 
 ## Installation and Usage
 
