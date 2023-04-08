@@ -4,7 +4,7 @@
 
 ## Installation and Usage
 
-1. Ensure all packages are installed
+1. Install Dependencies: `pip install -r requirements.txt`
 2. Run `streamlit run app.py`
 
 ## Technologies Used
@@ -14,6 +14,11 @@ MLB Insights is built on several technologies, including:
 - **Python:** The programming language used to build the site's backend.
 - **Streamlit:** The framework used to build the site's frontend and provide an easy-to-use interface.
 - **MLB Stats API:** The data source used to provide up-to-date player statistics and profiles.
+
+## Screenshots
+
+![Home](static/imgs/home.png)
+![League Leaders](static/imgs/league_leaders.png)
 
 ## License
 
