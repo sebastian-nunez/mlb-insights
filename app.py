@@ -1,8 +1,5 @@
-import webbrowser
 import streamlit as st
-import numpy as np
 import pandas as pd
-import streamlit.components.v1 as components
 from streamlit_option_menu import option_menu
 import statsapi
 import requests
@@ -209,12 +206,6 @@ def display_ballparks():
                           popup=popup_text).add_to(map)
 
         folium_static(map)
-        popular = st.button('Top 10 Ballparks - Bleacher Report')
-        if popular:
-            target_url = 'https://bleacherreport.com/articles/2772749-ranking-the-10-best-major-league-baseball-stadiums'
-
-            webbrowser.open_new_tab(target_url)
-
         st.caption('''
                     > Please note that the MLB Stadium map is for reference only and may not be up-to-date. We cannot guarantee the accuracy or completeness of the information provided.
                     >
