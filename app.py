@@ -126,10 +126,12 @@ def display_league_leaders():
     # st.write(statsapi.meta('leagueLeaderTypes'))
 
     # Parameters
-    metric = st.radio("Select a metric:", options.keys())
+    metric = st.radio("Select a metric:", options.keys(),
+                      help='Please visit [MLB Standard Stats](https://www.mlb.com/glossary/standard-stats) to see details!')
 
     seasons = [year for year in range(datetime.now().year, 1971, -1)]
-    selected_season = st.selectbox('Select a season:', seasons)
+    selected_season = st.selectbox(
+        'Select a season:', seasons, help='Regular season appearances')
 
     max_results = st.slider('Select the number of results:', 5,
                             100, step=5, value=10)
@@ -278,9 +280,10 @@ def display_signup_form():
             > Don't miss out on the latest news! Sign up for our email notifications to stay informed about the latest updates, news, and announcements.
             '''
         )
-        email = st.text_input("Enter your email address:")
+        email = st.text_input("Enter your email address:", help='*By signing up for notifications on this site, you may receive occasional emails or alerts from us. We strive to make these notifications useful and relevant, but we cannot guarantee their accuracy or timeliness. You can unsubscribe anytime.*')
 
-        submitted = st.form_submit_button("Submit")
+        submitted = st.form_submit_button(
+            "Submit")
 
         if submitted:
             if email:
