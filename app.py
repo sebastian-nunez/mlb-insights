@@ -34,22 +34,22 @@ BALLPARKS_URL = 'https://raw.github.com/mlbscorebot/ballparks/master/data/ballpa
 
 class Page(Enum):
     WHY_US = 'Why Us?'
-    PLAYER_SEARCH = 'Player Search'
+    SEARCH_ENGINE = 'Search Engine'
     LEAGUE_LEADERS = 'League Leaders'
     BALLPARKS = 'Ball Parks'
 
 
 def main():
     # default page
-    page = Page.PLAYER_SEARCH.value
+    page = Page.SEARCH_ENGINE.value
 
     # sidebar
     with st.sidebar:
-        page = option_menu("MLB Insights", [Page.PLAYER_SEARCH.value, Page.LEAGUE_LEADERS.value, Page.BALLPARKS.value, Page.WHY_US.value, ],
+        page = option_menu("MLB Insights", [Page.SEARCH_ENGINE.value, Page.LEAGUE_LEADERS.value, Page.BALLPARKS.value, Page.WHY_US.value, ],
                            icons=['search', 'list-task', 'geo-alt', 'info-circle'], menu_icon="body-text", default_index=0)
 
     # main content
-    if page == Page.PLAYER_SEARCH.value:
+    if page == Page.SEARCH_ENGINE.value:
         st.title('MLB Insights')
         st.caption('MLB Insights is the ultimate site for baseball fans who want to stay up-to-date on the latest player statistics and profiles.')
         st.divider()
@@ -73,7 +73,7 @@ def main():
 
         display_benefits()
     else:
-        page = Page.PLAYER_SEARCH.value
+        page = Page.SEARCH_ENGINE.value
 
 
 def display_player_search():
@@ -97,12 +97,13 @@ def display_player_search():
     # sort names alphabetically
     name_to_id = dict(sorted(name_to_id.items(), key=lambda x: x[0]))
 
-    st.header(Page.PLAYER_SEARCH.value)
+    st.header(Page.SEARCH_ENGINE.value)
 
     player_name = st.selectbox(
-        label='Search for a player',
-        options=name_to_id,
-        help="Enter a player's name then press ENTER...")
+        label='Start typing...',
+        options=name_to_id.keys(),
+        help="Enter a player's name then press ENTER...",
+    )
 
     if player_name != None:
         id = name_to_id[player_name]
