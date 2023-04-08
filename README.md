@@ -17,7 +17,8 @@ MLB Insights is built on several technologies, including:
 
 ## Screenshots
 
-![Home](static/imgs/home.png)
+![Search Engine](static/imgs/search_engine.png)
+
 ![League Leaders](static/imgs/league_leaders.png)
 
 ## License
