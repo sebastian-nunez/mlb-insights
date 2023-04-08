@@ -13,6 +13,7 @@ import folium
 import json
 from datetime import datetime
 import altair as alt
+import os
 
 st.set_page_config(
     page_title="MLB Insights",
@@ -30,7 +31,7 @@ st.set_page_config(
 )
 
 player = None
-BALLPARKS_URL = 'https://raw.github.com/mlbscorebot/ballparks/master/data/ballparks.json'
+BALLPARKS_JSON_PATH = './ballsparks.json'
 
 
 class Page(Enum):
@@ -87,7 +88,8 @@ def display_player_search():
 
     all_players = statsapi.lookup_player("")
     if not all_players:
-        st.error('No players were found!')
+        st.error('No players were found through the StatsAPI!')
+        return
 
     for player in all_players:
         id = player['id']
@@ -142,6 +144,7 @@ def display_league_leaders():
                                        leagueId=None, gameTypes=None, playerPool=None, sportId=1, statType=None)
     if not data:
         st.error('Unable to fetch data for {metric}!')
+        return
 
     df = pd.DataFrame(data, columns=['Rank', 'Player', 'Team', metric])
 
@@ -181,14 +184,15 @@ def display_league_leaders():
 
 
 def display_ballparks():
-    res = requests.get(
-        BALLPARKS_URL)
+    if not os.path.exists(BALLPARKS_JSON_PATH):
+        st.error(
+            f'Unable to fetch Ballpark locations! (fetching from {BALLPARKS_JSON_PATH})')
+        return
 
-    if res.status_code == 200:
-        data = res.json()
-
+    with open(BALLPARKS_JSON_PATH, 'r') as f:
         map = folium.Map(location=[40, -95], zoom_start=4)
 
+        data = json.load(f)
         for name, park in data.items():
             lat = park["lat"]
             long = park["long"]
@@ -204,9 +208,6 @@ def display_ballparks():
             target_url = 'https://bleacherreport.com/articles/2772749-ranking-the-10-best-major-league-baseball-stadiums'
 
             webbrowser.open_new_tab(target_url)
-    else:
-        st.error(
-            'Unable to fetch Ballpark locations! (fetching from {BALLPARKS_URL})')
 
 
 def display_benefits():

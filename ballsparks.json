@@ -1,0 +1,152 @@
+{
+  "AT&T Park": {
+    "lat": 37.77861,
+    "long": -122.38917,
+    "team": "San Francisco Giants"
+  },
+  "Citizens Bank Park": {
+    "lat": 39.90583,
+    "long": -75.16639,
+    "team": "Philadelphia Phillies"
+  },
+  "Busch Stadium": {
+    "lat": 38.6225,
+    "long": -90.19306,
+    "team": "St. Louis Cardinals"
+  },
+  "Citi Field": {
+    "lat": 40.75694,
+    "long": -73.84583,
+    "team": "New York Mets"
+  },
+  "Angel Stadium of Anaheim": {
+    "lat": 33.80028,
+    "long": -117.88278,
+    "team": "Los Angeles Angels of Anaheim"
+  },
+  "Dodger Stadium": {
+    "lat": 34.07361,
+    "long": -118.24,
+    "team": "Los Angeles Dodgers"
+  },
+  "Rangers Ballpark in Arlington": {
+    "lat": 32.75139,
+    "long": -97.08278,
+    "team": "Texas Rangers"
+  },
+  "Comerica Park": {
+    "lat": 42.33917,
+    "long": -83.04861,
+    "team": "Detroit Tigers"
+  },
+  "Coors Field": {
+    "lat": 39.75611,
+    "long": -104.99417,
+    "team": "Colorado Rockies"
+  },
+  "Kauffman Stadium": {
+    "lat": 39.05139,
+    "long": -94.48056,
+    "team": "Kansas City Royals"
+  },
+  "Miller Park": {
+    "lat": 43.02833,
+    "long": -87.97111,
+    "team": "Milwaukee Brewers"
+  },
+  "Great American Ball Park": {
+    "lat": 39.0975,
+    "long": -84.50667,
+    "team": "Cincinnati Reds"
+  },
+  "Nationals Park": {
+    "lat": 38.87278,
+    "long": -77.0075,
+    "team": "Washington Nationals"
+  },
+  "Fenway Park": {
+    "lat": 42.34639,
+    "long": -71.0975,
+    "team": "Boston Red Sox"
+  },
+  "O.co Coliseum": {
+    "lat": 37.75167,
+    "long": -122.20056,
+    "team": "Oakland Athletics"
+  },
+  "Minute Maid Park": {
+    "lat": 29.75694,
+    "long": -95.35556,
+    "team": "Houston Astros"
+  },
+  "Petco Park": {
+    "lat": 32.7073,
+    "long": -117.1566,
+    "team": "San Diego Padres"
+  },
+  "Progressive Field": {
+    "lat": 41.49583,
+    "long": -81.68528,
+    "team": "Cleveland Indians"
+  },
+  "Chase Field": {
+    "lat": 33.44528,
+    "long": -112.06694,
+    "team": "Arizona Diamondbacks"
+  },
+  "Safeco Field": {
+    "lat": 47.59139,
+    "long": -122.3325,
+    "team": "Seattle Mariners"
+  },
+  "Rogers Centre": {
+    "lat": 43.64139,
+    "long": -79.38917,
+    "team": "Toronto Blue Jays"
+  },
+  "Tropicana Field": {
+    "lat": 27.76833,
+    "long": -82.65333,
+    "team": "Tampa Bay Rays"
+  },
+  "Turner Field": {
+    "lat": 33.73528,
+    "long": -84.38944,
+    "team": "Atlanta Braves"
+  },
+  "PNC Park": {
+    "lat": 40.44694,
+    "long": -80.00583,
+    "team": "Pittsburgh Pirates"
+  },
+  "Target Field": {
+    "lat": 44.98167,
+    "long": -93.27833,
+    "team": "Minnesota Twins"
+  },
+  "U.S. Cellular Field": {
+    "lat": 41.83,
+    "long": -87.63389,
+    "team": "Chicago White Sox"
+  },
+  "Yankee Stadium": {
+    "lat": 40.82917,
+    "long": -73.92639,
+    "team": "New York Yankees"
+  },
+  "Wrigley Field": {
+    "lat": 41.94833,
+    "long": -87.65556,
+    "team": "Chicago Cubs"
+  },
+  "Marlins Park": {
+    "lat": 25.77806,
+    "long": -80.21972,
+    "team": "Miami Marlins"
+  },
+  "Oriole Park at Camden Yards": {
+    "lat": 39.28389,
+    "long": -76.62167,
+    "team": "Baltimore Orioles"
+  }
+}
