@@ -105,7 +105,7 @@ def display_player_search():
     st.header(Page.SEARCH_ENGINE.value)
 
     player_name = st.selectbox(
-        label='Start typing...',
+        label="Enter a player's name: ",
         options=name_to_id.keys(),
         help="Enter a player's name then press ENTER...",
     )
