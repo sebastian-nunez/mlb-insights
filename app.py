@@ -138,7 +138,7 @@ def display_league_leaders():
     selected_season = st.selectbox('Select a season:', seasons)
 
     max_results = st.slider('Select the number of results:', 5,
-                            25, step=5, value=10)
+                            100, step=5, value=10)
 
     # data fetching
     data = statsapi.league_leader_data(metric, season=selected_season, limit=max_results, statGroup=None,
@@ -266,6 +266,7 @@ def save_email(email):
 
 
 def display_signup_form():
+    st.divider()
     st.markdown(
         f'''
         #### Sign up for Notifications!
