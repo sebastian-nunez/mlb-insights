@@ -105,7 +105,7 @@ def display_player_search():
     st.header(Page.SEARCH_ENGINE.value)
 
     player_name = st.selectbox(
-        label="Enter the name of your favorite sports player to get their stats, highlights, and latest news!",
+        label="Enter a player's name to see their stats!",
         options=name_to_id.keys(),
         help="Enter a player's name then press ENTER...",
     )
