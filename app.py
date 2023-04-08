@@ -251,6 +251,10 @@ def is_valid_email(email):
 
 
 def save_email(email):
+    if not email:
+        st.error('No email was inputted! Unable to save!')
+        return
+
     users = []
 
     try:
