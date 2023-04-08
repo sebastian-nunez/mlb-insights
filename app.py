@@ -1,3 +1,4 @@
+import webbrowser
 import streamlit as st
 import numpy as np
 import pandas as pd
@@ -198,6 +199,11 @@ def display_ballparks():
                           popup=popup_text).add_to(map)
 
         folium_static(map)
+        popular = st.button('Top 10 Ballparks - Bleacher Report')
+        if popular:
+            target_url = 'https://bleacherreport.com/articles/2772749-ranking-the-10-best-major-league-baseball-stadiums'
+
+            webbrowser.open_new_tab(target_url)
     else:
         st.error(
             'Unable to fetch Ballpark locations! (fetching from {BALLPARKS_URL})')
