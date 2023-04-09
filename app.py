@@ -29,7 +29,7 @@ st.set_page_config(
     }
 )
 
-player = None
+selected_player = None
 BALLPARKS_JSON_PATH = './ballsparks.json'
 EMAILS_FILE_PATH = './emails.json'
 EMAIL_PATTERN = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
@@ -64,14 +64,25 @@ def main():
         page = Page.SEARCH_ENGINE.value
 
 
+class Player:
+    def __init__(self, info):
+        self.name = info.get('fullName')
+        self.id = info.get('id')
+        self.number = info.get('primaryNumber')
+        self.position = info.get('primaryPosition').get('abbreviation')
+
+    def __repr__(self) -> str:
+        return f'{self.name} ({self.id})'
+
+
 def display_player_search():
-    global player
+    global selected_player
 
     st.title('MLB Insights')
     st.caption('MLB Insights is the ultimate site for baseball fans who want to stay up-to-date on the latest player statistics and profiles.')
     st.divider()
 
-    players = defaultdict(dict)  # id -> Player()
+    id_to_player = defaultdict(dict)  # id -> Player()
     name_to_id = defaultdict(str)  # name -> id
     name_to_id[''] = None
 
@@ -80,11 +91,11 @@ def display_player_search():
         st.error('No players were found through the StatsAPI!')
         return
 
-    for player in all_players:
-        id = player['id']
-        name = player['fullName']
+    for selected_player in all_players:
+        id = selected_player['id']
+        name = selected_player['fullName']
 
-        players[id] = Player(player)
+        id_to_player[id] = Player(selected_player)
         name_to_id[name] = id
 
     # sort names alphabetically
@@ -102,11 +113,75 @@ def display_player_search():
 
     if player_name != None:
         id = name_to_id[player_name]
-        player = players[id]
+        selected_player = id_to_player[id]
 
-    if player:
+    if selected_player:
         # success = st.success(f'You Selected: {player}')
-        display_player_info(player)
+        display_player_info(selected_player)
+
+
+def display_player_info(player):
+    res = requests.get(
+        f"http://lookup-service-prod.mlb.com/json/named.player_info.bam?sport_code='mlb'&player_id='{player.id}'")
+
+    if res.status_code == 200:
+        res = res.json()
+
+        info = res['player_info']['queryResults']['row']
+
+        city, state, country = info['birth_city'], info['birth_state'], info['birth_country']
+        birth_location = ''
+        if country:
+            if city and state:
+                birth_location = f'{city}, {state}, {country}'
+            elif city and not state:
+                birth_location = f'{city}, {country}'
+            elif state and not city:
+                birth_location = f'{state}, {country}'
+        else:
+            birth_location = 'Unknown'
+
+        height = f"{info['height_feet']}' {info['height_inches']}\""
+        st.markdown(
+            f'''
+            # {player.name} ({player.position}) - :red[#{player.number}]
+            #### {info['team_name']}
+            > **Age:** {info['age']} | **Height:** {height} | **Weight:** {info['weight']}lbs | **Bats/Throws:** {info['bats']}/{info['throws']} | **Status:** {info['status']}
+            >
+            > **Born:** {birth_location}
+            ''')
+
+        data = statsapi.player_stat_data(
+            player.id, group="[hitting,pitching]", type='[career,season]', sportId=1)
+
+        if not data:
+            st.error(f'Unable to fetch player statistics for {player.name}!')
+            return
+
+        career_hitting = None
+        career_pitching = None
+        season_hitting = None
+        season_pitching = None
+        for entry in data['stats']:
+            type = entry['type']
+            group = entry['group']
+            stats = entry['stats']
+
+            if type == 'career':
+                if group == 'hitting':
+                    career_hitting = stats
+                elif group == 'pitching':
+                    career_pitching = stats
+            elif type == 'season':
+                if group == 'hitting':
+                    season_hitting = stats
+                elif group == 'pitching':
+                    season_pitching = stats
+
+        display_player_stats(
+            career_hitting, career_pitching, season_hitting, season_pitching)
+    else:
+        st.error(f'Unable to fetch full player info for {player.name}!')
 
 
 def display_league_leaders():
@@ -270,7 +345,7 @@ def display_game_pace():
 
     df = pd.DataFrame(data)
     df.set_index('season', inplace=True)
-    
+
     st.divider()
     st.subheader(f'{season1} vs. {season2}')
     st.bar_chart(df, width=600, height=600, use_container_width=True)
@@ -367,70 +442,6 @@ def display_signup_form():
                 no_email.empty()
 
 
-def display_player_info(player):
-    res = requests.get(
-        f"http://lookup-service-prod.mlb.com/json/named.player_info.bam?sport_code='mlb'&player_id='{player.id}'")
-
-    if res.status_code == 200:
-        res = res.json()
-
-        info = res['player_info']['queryResults']['row']
-
-        city, state, country = info['birth_city'], info['birth_state'], info['birth_country']
-        birth_location = ''
-        if country:
-            if city and state:
-                birth_location = f'{city}, {state}, {country}'
-            elif city and not state:
-                birth_location = f'{city}, {country}'
-            elif state and not city:
-                birth_location = f'{state}, {country}'
-        else:
-            birth_location = 'Unknown'
-
-        height = f"{info['height_feet']}' {info['height_inches']}\""
-        st.markdown(
-            f'''
-            # {player.name} ({player.position}) - :red[#{player.number}]
-            #### {info['team_name']}
-            > **Age:** {info['age']} | **Height:** {height} | **Weight:** {info['weight']}lbs | **Bats/Throws:** {info['bats']}/{info['throws']} | **Status:** {info['status']}
-            >
-            > **Born:** {birth_location}
-            ''')
-
-        data = statsapi.player_stat_data(
-            player.id, group="[hitting,pitching]", type='[career,season]', sportId=1)
-
-        if not data:
-            st.error(f'Unable to fetch player statistics for {player.name}!')
-            return
-
-        career_hitting = None
-        career_pitching = None
-        season_hitting = None
-        season_pitching = None
-        for entry in data['stats']:
-            type = entry['type']
-            group = entry['group']
-            stats = entry['stats']
-
-            if type == 'career':
-                if group == 'hitting':
-                    career_hitting = stats
-                elif group == 'pitching':
-                    career_pitching = stats
-            elif type == 'season':
-                if group == 'hitting':
-                    season_hitting = stats
-                elif group == 'pitching':
-                    season_pitching = stats
-
-        display_player_stats(
-            career_hitting, career_pitching, season_hitting, season_pitching)
-    else:
-        st.error(f'Unable to fetch full player info for {player.name}!')
-
-
 def display_player_stats(career_hitting, career_pitching, season_hitting, season_pitching):
     career_hitting_tab, season_hitting_tab, career_pitching_tab, season_pitching_tab = st.tabs(
         ['Career Hitting', 'Season Hitting', 'Career Pitching', 'Season Pitching'])
@@ -440,27 +451,27 @@ def display_player_stats(career_hitting, career_pitching, season_hitting, season
             display_hitting_stats(career_hitting)
         else:
             st.warning(
-                f'Oh wow! {player.name} has not batted in their entire career!')
+                f'Oh wow! {selected_player.name} has not batted in their entire career!')
 
     with season_hitting_tab:
         if season_hitting:
             display_hitting_stats(season_hitting)
         else:
-            st.warning(f'{player.name} has not hit this season!')
+            st.warning(f'{selected_player.name} has not hit this season!')
 
     with career_pitching_tab:
         if career_pitching:
             display_pitching_stats(career_pitching)
         else:
             st.warning(
-                f'Jeez! {player.name} has not pitched this season!')
+                f'Jeez! {selected_player.name} has not pitched this season!')
 
     with season_pitching_tab:
         if season_pitching:
             display_pitching_stats(season_pitching)
         else:
             st.warning(
-                f'{player.name} has not pitched in their entire career!')
+                f'{selected_player.name} has not pitched in their entire career!')
 
 
 def display_hitting_stats(stats):
@@ -535,17 +546,6 @@ def display_pitching_stats(stats):
 
     with st.expander('Advanced Statistics'):
         st.table(advanced_stats)
-
-
-class Player:
-    def __init__(self, info):
-        self.name = info.get('fullName')
-        self.id = info.get('id')
-        self.number = info.get('primaryNumber')
-        self.position = info.get('primaryPosition').get('abbreviation')
-
-    def __repr__(self) -> str:
-        return f'{self.name} ({self.id})'
 
 
 if __name__ == '__main__':
