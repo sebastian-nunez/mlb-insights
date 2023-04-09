@@ -270,7 +270,8 @@ def display_game_pace():
 
     df = pd.DataFrame(data)
     df.set_index('season', inplace=True)
-
+    
+    st.divider()
     st.subheader(f'{season1} vs. {season2}')
     st.bar_chart(df, width=600, height=600, use_container_width=True)
 
