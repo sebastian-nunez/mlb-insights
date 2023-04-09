@@ -35,6 +35,10 @@ MLB Insights is built on several technologies, including:
 
 ![Ballparks](static/imgs/ballparks.png)
 
+### Game Pace
+
+![Game Pace](static/imgs/game_pace.png)
+
 ### Benefits
 
 ![Benefits](static/imgs/benefits.png)
