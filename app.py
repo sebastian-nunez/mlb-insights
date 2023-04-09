@@ -276,7 +276,7 @@ def display_signup_form():
     with st.form("sign_up", clear_on_submit=True):
         st.markdown(
             f'''
-            #### Sign up for Notifications!
+            #### Sign Up for Notifications!
             > Don't miss out on the latest news! Sign up for our email notifications to stay informed about the latest updates, news, and announcements.
             '''
         )
