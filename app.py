@@ -91,11 +91,11 @@ def display_player_search():
         st.error('No players were found through the StatsAPI!')
         return
 
-    for selected_player in all_players:
-        id = selected_player['id']
-        name = selected_player['fullName']
+    for player in all_players:
+        id = player['id']
+        name = player['fullName']
 
-        id_to_player[id] = Player(selected_player)
+        id_to_player[id] = Player(player)
         name_to_id[name] = id
 
     # sort names alphabetically
