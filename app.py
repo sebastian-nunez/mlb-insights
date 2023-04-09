@@ -469,7 +469,7 @@ def display_hitting_stats(stats):
         'RBI': stats['rbi'],
         'Runs': stats['runs'],
         'Stolen Bases': stats['stolenBases'],
-        'Games Played⠀': stats['gamesPlayed'],
+        'Games Played': stats['gamesPlayed'],
     }
 
     advanced_stats = {
@@ -478,7 +478,7 @@ def display_hitting_stats(stats):
         'OPS': stats['ops'],
         'Doubles': stats['doubles'],
         'Triples': stats['triples'],
-        'Stolen Base (%)⠀': stats['stolenBasePercentage'],
+        'Stolen Base (%)': stats['stolenBasePercentage'],
     }
 
     hide_table_row_index = """
@@ -503,8 +503,7 @@ def display_pitching_stats(stats):
         'Strikeouts': stats['strikeOuts'],
         'Stolen Base (%)': stats['stolenBasePercentage'],
         'Win (%)': stats['winPercentage'],
-        # invisible characters added so the tables line up
-        'Games Pitched⠀⠀': stats['gamesPitched'],
+        'Games Pitched': stats['gamesPitched'],
     }
 
     advanced_stats = {
