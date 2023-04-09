@@ -334,27 +334,144 @@ def display_player_info(player):
             > **Born:** {birth_location}
             ''')
 
-        career_hitting, career_pitching, projected_hitting, projected_pitching = st.tabs(
-            ["Career Hitting", "Career Pitching", "Projected Hitting", "Projected Pitching"])
+        data = statsapi.player_stat_data(
+            player.id, group="[hitting,pitching]", type='[career,season]', sportId=1)
 
-        with career_hitting:
-            st.header("A cat")
-            st.image("https://static.streamlit.io/examples/cat.jpg", width=200)
+        if not data:
+            st.error(f'Unable to fetch player statistics for {player.name}!')
+            return
 
-        with career_pitching:
-            st.header("A cat")
-            st.image("https://static.streamlit.io/examples/cat.jpg", width=200)
+        career_hitting = None
+        career_pitching = None
+        season_hitting = None
+        season_pitching = None
+        for entry in data['stats']:
+            type = entry['type']
+            group = entry['group']
+            stats = entry['stats']
 
-        with projected_hitting:
-            st.header("A dog")
-            st.image("https://static.streamlit.io/examples/dog.jpg", width=200)
+            if type == 'career':
+                if group == 'hitting':
+                    career_hitting = stats
+                elif group == 'pitching':
+                    career_pitching = stats
+            elif type == 'season':
+                if group == 'hitting':
+                    season_hitting = stats
+                elif group == 'pitching':
+                    season_pitching = stats
 
-        with projected_pitching:
-            st.header("A dog")
-            st.image("https://static.streamlit.io/examples/dog.jpg", width=200)
-
+        display_player_stats(
+            career_hitting, career_pitching, season_hitting, season_pitching)
     else:
         st.error(f'Unable to fetch full player info for {player.name}!')
+
+
+def display_player_stats(career_hitting, career_pitching, season_hitting, season_pitching):
+    career_hitting_tab, season_hitting_tab, career_pitching_tab, season_pitching_tab = st.tabs(
+        ['Career Hitting', 'Season Hitting', 'Career Pitching', 'Season Pitching'])
+
+    with career_hitting_tab:
+        if career_hitting:
+            display_hitting_stats(career_hitting)
+        else:
+            st.warning(
+                f'Oh wow! {player.name} has not batted in their entire career!')
+
+    with season_hitting_tab:
+        if season_hitting:
+            display_hitting_stats(season_hitting)
+        else:
+            st.warning(f'{player.name} has not hit this season!')
+
+    with career_pitching_tab:
+        if career_pitching:
+            display_pitching_stats(career_pitching)
+        else:
+            st.warning(
+                f'Jeez! {player.name} has not pitched this season!')
+
+    with season_pitching_tab:
+        if season_pitching:
+            display_pitching_stats(season_pitching)
+        else:
+            st.warning(
+                f'{player.name} has not pitched in their entire career!')
+
+
+def display_hitting_stats(stats):
+    basic_stats = {
+        'Average': stats['avg'],
+        'Homeruns': stats['homeRuns'],
+        'RBI': stats['rbi'],
+        'Runs': stats['runs'],
+        'Stolen Bases': stats['stolenBases'],
+        'Games Played⠀': stats['gamesPlayed'],
+    }
+
+    advanced_stats = {
+        'OBP': stats['obp'],
+        'SLG': stats['slg'],
+        'OPS': stats['ops'],
+        'Doubles': stats['doubles'],
+        'Triples': stats['triples'],
+        'Stolen Base (%)⠀': stats['stolenBasePercentage'],
+    }
+
+    hide_table_row_index = """
+        <style>
+        thead tr:first-child {display:none} th
+        tbody th {display:none}
+        </style>
+        """
+
+    st.markdown(hide_table_row_index, unsafe_allow_html=True)
+    st.table(basic_stats)
+
+    with st.expander('Advanced Statistics'):
+        st.table(advanced_stats)
+
+
+def display_pitching_stats(stats):
+    basic_stats = {
+        'ERA': stats['era'],
+        'Avg': stats['avg'],
+        'Homeruns': stats['homeRuns'],
+        'Strikeouts': stats['strikeOuts'],
+        'Stolen Base (%)': stats['stolenBasePercentage'],
+        'Win (%)': stats['winPercentage'],
+        # invisible characters added so the tables line up
+        'Games Pitched⠀⠀': stats['gamesPitched'],
+    }
+
+    advanced_stats = {
+        'Innings Pitched': stats['inningsPitched'],
+        'Strike (%)': stats['strikePercentage'],
+        'Whip': stats['whip'],
+        'OBP': stats['obp'],
+        'SLG': stats['slg'],
+        'OPS': stats['ops'],
+        'Games Started': stats['gamesStarted'],
+        'Shutouts': stats['shutouts'],
+        'Blown Saves': stats['blownSaves'],
+        'Wild Pitches': stats['wildPitches'],
+        'Hit By Pitch': stats['hitByPitch'],
+        'Base on Balls': stats['baseOnBalls'],
+    }
+
+    hide_table_row_index = """
+        <style>
+        thead tr:first-child {display:none} th
+        tbody th {display:none}
+        </style>
+        """
+
+    # Inject CSS with Markdown
+    st.markdown(hide_table_row_index, unsafe_allow_html=True)
+    st.table(basic_stats)
+
+    with st.expander('Advanced Statistics'):
+        st.table(advanced_stats)
 
 
 class Player:
