@@ -2,7 +2,7 @@
 
 > MLB Insights is the ultimate site for baseball fans who want to stay up-to-date on the latest player statistics and profiles.
 > 
-> **Live App;** https://mlb-insights.streamlit.app/
+> **Live App:** [mlb-insights.streamlit.app](https://mlb-insights.streamlit.app/)
 
 ## Installation and Usage
 
@@ -14,10 +14,10 @@
 MLB Insights is built on several technologies, including:
 
 - **Python:** The programming language used to build the site's backend.
-- **Streamlit:** The framework used to build the site's frontend and provide an easy-to-use interface.
+- **Streamlit:** The framework used to build and host the site's frontend.
 - **MLB Stats API:** The data source used to provide up-to-date player statistics and profiles.
 
-## Screenshots
+## Preview
 
 ![Search Engine](static/imgs/search_engine.png)
 
