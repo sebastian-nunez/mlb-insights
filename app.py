@@ -209,7 +209,70 @@ def display_ballparks():
         folium_static(map)
         st.caption('> Please note that the MLB Stadium map is for reference only and may not be up-to-date. We cannot guarantee the accuracy or completeness of the information provided.')
 
+        display_game_pace()
+
         display_signup_form()
+
+
+def display_game_pace():
+    current_year = datetime.now().year
+
+    st.divider()
+    st.header('Game Pace')
+    st.markdown(
+        f'> With this tool, you can easily compare the general *pace* of baseball games between :red[**1999**] and :red[**{current_year}**] to identify any trends.')
+
+    season1 = st.number_input(
+        f"Select a year between 1999 and {current_year}",
+        min_value=1999,
+        max_value=current_year-1,
+        value=2001,
+        step=1,
+        label_visibility='collapsed'
+    )
+
+    st.subheader('vs.')
+
+    season2 = st.number_input(
+        f"Select a year between 1999 and {current_year}",
+        min_value=season1+1,
+        max_value=current_year,
+        value=current_year,
+        step=1,
+        label_visibility='collapsed'
+    )
+
+    pace1 = statsapi.game_pace_data(season=season1, sportId=1)['sports'][0]
+    pace2 = statsapi.game_pace_data(
+        season=season2, sportId=1)['sports'][0]
+
+    if not pace1 or not pace2:
+        st.error(f'Unable to compare {season1} to {season2}!')
+        return
+
+    # only these selected features can be compared
+    data = {
+        'season': [],
+        'hitsPer9Inn': [],
+        'runsPer9Inn': [],
+        'pitchesPer9Inn': [],
+        'hitsPerGame': [],
+        'runsPerGame': [],
+        'pitchesPerGame': [],
+        'timePerGame': [],
+        'timePerPitch': [],
+        'pitchesPerPitcher': [],
+    }
+
+    for metric in data:
+        data[metric].append(pace1[metric])
+        data[metric].append(pace2[metric])
+
+    df = pd.DataFrame(data)
+    df.set_index('season', inplace=True)
+
+    st.subheader(f'{season1} vs. {season2}')
+    st.bar_chart(df, width=600, height=600, use_container_width=True)
 
 
 def display_benefits():
