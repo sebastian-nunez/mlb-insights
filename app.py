@@ -464,14 +464,15 @@ def display_player_stats(career_hitting, career_pitching, season_hitting, season
             display_pitching_stats(career_pitching)
         else:
             st.warning(
-                f'Jeez! {selected_player.name} has not pitched this season!')
+                f'{selected_player.name} has not pitched in their entire career!')
 
     with season_pitching_tab:
         if season_pitching:
             display_pitching_stats(season_pitching)
         else:
             st.warning(
-                f'{selected_player.name} has not pitched in their entire career!')
+                f'Jeez! {selected_player.name} has not pitched this season!')
+            
 
 
 def display_hitting_stats(stats):
