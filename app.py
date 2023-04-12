@@ -16,8 +16,8 @@ import re
 
 st.set_page_config(
     page_title="MLB Insights",
-    layout="wide",
-    initial_sidebar_state="expanded",
+    layout="centered",
+    initial_sidebar_state="auto",
     menu_items={
         'About': f'''
         MLB Insights is the ultimate site for baseball fans who want to stay up-to-date on the latest player statistics and profiles.
