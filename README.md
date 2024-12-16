@@ -2,6 +2,9 @@
 
 > MLB Insights is the ultimate site for baseball fans who want to stay up-to-date on the latest player statistics and profiles.
 >
+> **UPDATE [12/15/24]:** Looks like the `http://lookup-service-prod.mlb.com` has now been fully deprecated and put out of commision (replaced by `http://statsapi.mlb.com`).
+> As a result, the main `Search Engine` tab is unable to pull the relevant data. For now, I do NOT plan to migrate that functionality to the new API :/
+>
 > **Live App:** [mlb-insights.streamlit.app](https://mlb-insights.streamlit.app/)
 
 ## Installation and Usage
